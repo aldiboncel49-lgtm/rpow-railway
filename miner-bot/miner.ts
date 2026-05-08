@@ -155,7 +155,9 @@ async function requestMagicLink(email: string): Promise<boolean> {
   const res = await apiPost('/auth/request', '', { email });
   if (res.status === 429) {
     const body = await res.json() as any;
-    warn(`Rate limited. Retry after ${body.retry_after}s`);
+    const waitMs = (body.retry_after || 30) * 1000;
+    warn(`Rate limited. Tunggu ${body.retry_after}s...`);
+    await sleep(waitMs);
     return false;
   }
   return res.ok;
