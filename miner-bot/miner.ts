@@ -142,7 +142,7 @@ async function getWallet(cookie: string) {
 // ─── TEST INBOX — ambil magic link dari server langsung ──────────────────────
 async function getTestMagicLink(email: string): Promise<string | null> {
   try {
-    const res = await fetch(`${CONFIG.SERVER_URL}/test-inbox/${encodeURIComponent(email)}`);
+    const res = await fetch(`${CONFIG.SERVER_URL}/test/last-link/${encodeURIComponent(email)}?json=1`);
     if (!res.ok) return null;
     const data = await res.json() as any;
     return data?.link || data?.url || null;
