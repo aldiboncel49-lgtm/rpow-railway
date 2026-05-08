@@ -28,7 +28,7 @@ SERVER_PID=$!
 # ─── Tunggu server ready ────────────────────────────────────────────────────
 echo "[SERVER] Waiting for server to be ready..."
 RETRIES=30
-until wget -qO- http://localhost:${PORT:-8080}/health > /dev/null 2>&1; do
+until node -e "fetch('http://localhost:${PORT:-8080}/health').then(r=>r.ok?process.exit(0):process.exit(1)).catch(()=>process.exit(1))" 2>/dev/null; do
   RETRIES=$((RETRIES - 1))
   if [ "$RETRIES" = "0" ]; then
     echo "[SERVER] Server gagal start! Check logs."
