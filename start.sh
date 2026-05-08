@@ -40,8 +40,8 @@ done
 echo "[SERVER] ✅ Server ready!"
 
 # ─── Jalankan miner jika RPOW_EMAIL di-set ──────────────────────────────────
-if [ -n "$RPOW_EMAIL" ]; then
-  echo "[MINER] RPOW_EMAIL=$RPOW_EMAIL — starting miner..."
+if [ -n "$RPOW_EMAIL" ] || [ -n "$RPOW_SESSION_COOKIE" ]; then
+  echo "[MINER] Starting miner..."
   # Set server URL ke localhost karena satu container
   export RPOW_SERVER_URL="http://localhost:${PORT:-8080}"
   start_miner &
