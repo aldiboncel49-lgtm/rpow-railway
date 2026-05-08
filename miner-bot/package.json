@@ -1,0 +1,14 @@
+{
+  "name": "@rpow/miner-bot",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node --experimental-strip-types miner.ts",
+    "build": "tsc -b",
+    "start:compiled": "node dist/miner.js"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

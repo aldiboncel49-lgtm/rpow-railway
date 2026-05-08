@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: p
+        ports:
+          - 55432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --workspaces --include-workspace-root
+
+      - name: Build shared
+        run: npm run build --workspace @rpow/shared
+
+      - name: Build server
+        run: npm run build --workspace @rpow/server
+
+      - name: Run tests
+        env:
+          DATABASE_URL: postgres://postgres:p@localhost:55432/postgres
+          RESEND_API_KEY: re_test
+          EMAIL_FROM: test@rpow2.local
+          SESSION_SECRET: 0000000000000000000000000000000000000000000000000000000000000000
+          MAGIC_LINK_BASE_URL: http://localhost:8080
+          WEB_ORIGIN: http://localhost:5173
+          RPOW_TEST_INBOX: "true"
+          DIFFICULTY_BITS: "8"
+          DIFFICULTY_FLOOR: "4"
+          RPOW_SIGNING_PRIVATE_KEY_HEX: "0000000000000000000000000000000000000000000000000000000000000001"
+          RPOW_SIGNING_PUBLIC_KEY_HEX: "4cb5abf6ad79fbf5abbccafcc269d85cd2651ed4b885b5869f241aedf0a5ba29"
+        run: npm test

@@ -1,0 +1,171 @@
+:root {
+  --bg: #08080a;
+  --bg-2: #0d0d10;
+  --fg: #e8e3d3;
+  --accent: #6ee7b7;
+  --accent-dim: rgba(110, 231, 183, 0.18);
+  --dim: #6b6b6b;
+  --dimmer: #3a3a3a;
+  --error: #f87171;
+  --glow: rgba(110, 231, 183, 0.06);
+}
+:root[data-theme="amber"] {
+  --fg: #ffb000;
+  --accent: #ffb000;
+  --accent-dim: rgba(255, 176, 0, 0.18);
+  --glow: rgba(255, 176, 0, 0.08);
+}
+:root[data-theme="green"] {
+  --fg: #5be09a;
+  --accent: #5be09a;
+  --accent-dim: rgba(91, 224, 154, 0.18);
+  --glow: rgba(91, 224, 154, 0.08);
+}
+
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+
+body {
+  background:
+    radial-gradient(ellipse at top, rgba(110, 231, 183, 0.04), transparent 60%),
+    var(--bg);
+  color: var(--fg);
+  font-family: 'IBM Plex Mono', ui-monospace, Menlo, Consolas, monospace;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  /* very subtle CRT scanlines */
+  position: relative;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.012) 0px,
+    rgba(255, 255, 255, 0.012) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  z-index: 1;
+}
+
+a { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent-dim); }
+a:hover { border-bottom-color: var(--accent); }
+
+button {
+  background: transparent;
+  color: var(--fg);
+  border: 1px solid var(--accent-dim);
+  padding: 4px 14px;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 100ms, border-color 100ms;
+}
+button:hover { background: var(--accent-dim); border-color: var(--accent); }
+button:disabled { opacity: 0.4; cursor: not-allowed; }
+
+input {
+  background: rgba(255,255,255,0.02);
+  color: var(--fg);
+  border: 1px solid var(--dimmer);
+  padding: 5px 10px;
+  font: inherit;
+  outline: none;
+  border-radius: 2px;
+}
+input:focus { border-color: var(--accent); background: rgba(255,255,255,0.04); }
+
+.app-shell {
+  max-width: 78ch;
+  margin: 32px auto 64px;
+  padding: 0 16px;
+  position: relative;
+  z-index: 2;
+}
+
+.terminal {
+  background: var(--bg-2);
+  border: 1px solid var(--accent-dim);
+  border-radius: 6px;
+  box-shadow:
+    0 0 60px var(--glow),
+    0 12px 40px rgba(0,0,0,0.6),
+    inset 0 0 0 1px rgba(255,255,255,0.02);
+  overflow: hidden;
+}
+
+.terminal-titlebar {
+  background: rgba(255,255,255,0.025);
+  border-bottom: 1px solid var(--accent-dim);
+  padding: 8px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--dim);
+  user-select: none;
+}
+.terminal-titlebar .dots { display: flex; gap: 6px; }
+.terminal-titlebar .dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--dimmer);
+  border: 1px solid rgba(255,255,255,0.04);
+}
+.terminal-titlebar .title { flex: 1; text-align: center; letter-spacing: 0.04em; }
+.terminal-titlebar .badge {
+  font-size: 11px;
+  color: var(--accent);
+  border: 1px solid var(--accent-dim);
+  padding: 1px 6px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.terminal-body { padding: 22px 26px 28px; }
+
+.app-header pre { margin: 0; color: var(--accent); line-height: 1.2; }
+.app-header .tagline {
+  color: var(--dim);
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  margin: 6px 0 0 4px;
+}
+
+.nav {
+  margin: 16px 0 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 14px;
+  align-items: center;
+}
+.nav a {
+  border-bottom: none;
+  color: var(--fg);
+  opacity: 0.65;
+  transition: opacity 100ms, color 100ms;
+}
+.nav a:hover, .nav a.active { opacity: 1; color: var(--accent); }
+.nav .sep { color: var(--dimmer); }
+
+.tagline { color: var(--dim); font-size: 12px; }
+.error { color: var(--error); }
+.dim { color: var(--dim); }
+.accent { color: var(--accent); }
+
+.panel { margin: 18px 0 4px; }
+.panel-title {
+  color: var(--accent);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0 0 6px 0;
+  border-bottom: 1px solid var(--accent-dim);
+  padding-bottom: 4px;
+}
+.panel pre { margin: 0; }
+
+main { margin-top: 4px; }
